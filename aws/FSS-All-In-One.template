@@ -17,6 +17,7 @@ Metadata:
           - TriggerWithObjectCreatedEvent
           - ReportObjectKey
           - ScanOnGetObject
+          - ScannerConfiguration
       - Label:
           default: "[ Optional: Permissions control ]"
         Parameters:
@@ -112,6 +113,8 @@ Metadata:
         default: File Storage Security management account
       TriggerWithObjectCreatedEvent:
         default: TriggerWithObjectCreatedEvent
+      ScannerConfiguration:
+        default: Scanner configuration in JSON
 
 Parameters:
   AdditionalIAMPolicies:
@@ -273,6 +276,10 @@ Parameters:
       - 'false'
     Description: If the s3:ObjectCreated:* event of the S3BucketToScan is in use, set this option to false. Then trigger the scans by invoking the deployed BucketListenerLambda.
     Type: String
+  ScannerConfiguration:
+    Default: '{}'
+    Description: Scanner configuration in JSON
+    Type: String
 
 Conditions:
   IsScanOnGetObjectEnabled:
@@ -312,6 +319,7 @@ Resources:
         SubnetIDs: !Join [',', !Ref SubnetIDs]
         TrendMicroManagementAccount: !Ref TrendMicroManagementAccount
         TriggerWithObjectCreatedEvent: !Ref TriggerWithObjectCreatedEvent
+        ScannerConfiguration: !Ref ScannerConfiguration
       Tags:
         - Key: Name
           Value: FSS-Storage-Stack
